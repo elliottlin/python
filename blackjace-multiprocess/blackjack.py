@@ -3,9 +3,13 @@ import multiprocessing
 import math
 import time
 
-simulations = 100 * 1000
-num_decks = 4
-shffle_prec = 75
+SIMLULATIONS = 100 * 1000
+NUM_DECKS = 4
+SHUFFLE_PERC = 75
+
+WIN = 1
+DRAW = 0
+LOSE = -1
 
 def simulate(queue, batch_size):
     deck = []
@@ -17,11 +21,8 @@ def simulate(queue, batch_size):
             2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11,
             2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11,
         ]
-
-        std_deck = std_deck * num_decks
-
+        std_deck = std_deck * NUM_DECKS
         random.shuffle(std_deck)
-
         return std_deck[:]
 
     def play_hand():
@@ -40,12 +41,11 @@ def simulate(queue, batch_size):
 
         p_sum = sum(player_cards)
         if p_sum > 21:
-            return -1
+            return LOSE
 
         # deal dealer on soft 17
         while sum(dealer_cards) < 18:
             leave = False
-
             # check for soft 17
             if sum(dealer_cards) == 17:
                 leave = True
@@ -59,48 +59,43 @@ def simulate(queue, batch_size):
                 break
             dealer_cards.append(deck.pop(0))
 
-
-
         d_sum = sum(dealer_cards)
 
         if d_sum > 21:
-            return 1
+            return WIN
 
         if d_sum == p_sum:
-            return 0
+            return DRAW
 
         if d_sum > p_sum:
-            return -1
+            return LOSE
 
         if d_sum < p_sum:
-            return 1
+            return WIN
 
     deck = new_deck()
-
     win, draw, lose = 0, 0, 0
-    for i in range(0, batch_size):
-        if (float(len(deck))/(52*num_decks)) * 100 < shffle_prec:
+    for _ in range(0, batch_size):
+        if (float(len(deck))/(52*NUM_DECKS)) * 100 < SHUFFLE_PERC:
             deck = new_deck()
-
         result = play_hand()
 
-        if result == 1:
+        if result == WIN:
             win += 1
-
-        if result == 0:
+        elif result == DRAW:
             draw += 1
-
-        if result == -1:
+        elif result == LOSE:
             lose += 1
 
     queue.put([win, draw, lose])
+
+
 if __name__ == '__main__':
-    # freeze_support()
     start_time = time.time()
 
     # simulate
     cpus = multiprocessing.cpu_count()
-    batch_size = int(math.ceil(simulations/ float(cpus)))
+    batch_size = int(math.ceil(SIMLULATIONS/ float(cpus)))
 
     queue = multiprocessing.Queue()
 
@@ -127,11 +122,10 @@ if __name__ == '__main__':
         draw += results[1]
         lose += results[2]
 
-    anchor = 15
     print("{0: >20}  {1}".format("cores", cpus))
-    print("{0: >20}  {1}".format("total simulations", simulations))
-    print("{0: >20}  {1}".format("sim/s", (float(simulations)/finish_time)))
+    print("{0: >20}  {1}".format("total simulations", SIMLULATIONS))
+    print("{0: >20}  {1}".format("sim/s", (float(SIMLULATIONS)/finish_time)))
     print("{0: >20}  {1}".format("time", finish_time))
-    print("{0: >20}  {1}".format("win", (win/float(simulations) * 100)))
-    print("{0: >20}  {1}".format("draw", (draw/float(simulations) * 100)))
-    print("{0: >20}  {1}".format("lose", (lose/float(simulations) * 100)))
+    print("{0: >20}  {1}".format("win", (win/float(SIMLULATIONS) * 100)))
+    print("{0: >20}  {1}".format("draw", (draw/float(SIMLULATIONS) * 100)))
+    print("{0: >20}  {1}".format("lose", (lose/float(SIMLULATIONS) * 100)))
