@@ -1,3 +1,5 @@
 ## usage
 
-`python calling_process.py`
+```shell
+phthon calling_process.py
+```

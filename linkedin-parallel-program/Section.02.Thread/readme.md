@@ -11,7 +11,7 @@
 * event
 
 
-`
+```python
 class threading.Thread(
     group=None,
     target=None,
@@ -19,7 +19,7 @@ class threading.Thread(
     args=(),
     kwargs={}
 )
-`
+```
 
 ### 03 Implement a New Thread Using the Thread Module
 
@@ -45,7 +45,9 @@ similar to lock
 * acquire when semaphore > 0
 
 >> A particular use of semaphores is the mutex which is nothing but a semaphore with an internal variable initialized to the value 1
+
 >> It allows the realization of mutual exclusion in access to data and resources
+
 >> Semaphores are still commonly used in programming languages that are multithreaded
 
 
@@ -65,6 +67,7 @@ A condtion identifies a change of state in the application
 Communication between thread
 
 >> If optional args block is true and timeout is None - Block until a free slot is available
+
 >> If the block is false - Put an item in the queue if a free slot is immediately available or raise the full exception
 
 
@@ -78,6 +81,6 @@ GIL
 
 ### Result of the Preceding Code
 
-- Multithreading execution becomes faster than the single-threaded execution
-- GIL does not prevent a programmer from creating a multithreading work that concurrently increases the speed of execution
-- while threads are a language construct, the CPython interpreter is the bridge between the threads and operating system 
+* Multithreading execution becomes faster than the single-threaded execution
+* GIL does not prevent a programmer from creating a multithreading work that concurrently increases the speed of execution
+* while threads are a language construct, the CPython interpreter is the bridge between the threads and operating system 
