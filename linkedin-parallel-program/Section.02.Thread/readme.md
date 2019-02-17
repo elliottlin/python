@@ -44,11 +44,11 @@ similar to lock
 
 * acquire when semaphore > 0
 
->> A particular use of semaphores is the mutex which is nothing but a semaphore with an internal variable initialized to the value 1
+* A particular use of semaphores is the mutex which is nothing but a semaphore with an internal variable initialized to the value 1
 
->> It allows the realization of mutual exclusion in access to data and resources
+* It allows the realization of mutual exclusion in access to data and resources
 
->> Semaphores are still commonly used in programming languages that are multithreaded
+* Semaphores are still commonly used in programming languages that are multithreaded
 
 
 ### 06 Condition
@@ -66,9 +66,9 @@ A condtion identifies a change of state in the application
 
 Communication between thread
 
->> If optional args block is true and timeout is None - Block until a free slot is available
+* If optional args block is true and timeout is None - Block until a free slot is available
 
->> If the block is false - Put an item in the queue if a free slot is immediately available or raise the full exception
+* If the block is false - Put an item in the queue if a free slot is immediately available or raise the full exception
 
 
 ## Evaluatin the performance of multithread applications
